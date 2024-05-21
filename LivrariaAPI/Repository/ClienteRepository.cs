@@ -19,9 +19,9 @@ namespace LivrariaAPI.Repository
             return Save();
         }
 
-        public bool Delete(int id)
+        public bool Delete(ClienteModel cliente)
         {
-            var cliente = _context.Clientes.Where(c => c.Id == id).FirstOrDefault();
+            var clienteDeletado = _context.Clientes.Where(c => c.Id == cliente.Id).FirstOrDefault();
             _context.Clientes.Remove(cliente);
 
             return Save();

@@ -47,46 +47,52 @@ namespace LivrariaAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var clienteNovo = new ClienteModel()
-                { 
-                    Nome = cliente.Nome,
-                    Endereco = cliente.Endereco,
-                    Numero = cliente.Numero,
-                    Bairro = cliente.Bairro,
-                    Municipio = cliente.Municipio,
-                    Cep = cliente.Cep,
-                    UF = cliente.UF,
-                    DataNasc = cliente.DataNasc,
-                };
-                _clienteRepository.Add(clienteNovo);
+                _clienteRepository.Add(cliente);
                 return Ok("Cliente criado com sucesso!");
             }
             return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditarCliente(ClienteModel cliente, int id)
+        public async Task<IActionResult> EditarCliente([FromBody] ClienteModel cliente, int id)
         {
-            var clienteEditado = await _clienteRepository.GetClienteByIdAsNoTracking(id);
-            if(clienteEditado == null)
+            var clienteExistente = await _clienteRepository.GetClienteByIdAsNoTracking(id);
+            if (clienteExistente == null)
                 return BadRequest("Cliente não encontrado");
+            if (clienteExistente.Id != cliente.Id)
+                return BadRequest("Os ID's não conferem");
 
-
-            clienteEditado = new ClienteModel()
+            try
             {
-                Id = cliente.Id,
-                Nome = cliente.Nome,
-                Endereco = cliente.Endereco,
-                Numero = cliente.Numero,
-                Bairro = cliente.Bairro,
-                Municipio = cliente.Municipio,
-                Cep = cliente.Cep,
-                UF = cliente.UF,
-                DataNasc = cliente.DataNasc
-            };
+                clienteExistente.Nome = cliente.Nome;
+                clienteExistente.Endereco = cliente.Endereco;
+                clienteExistente.Numero = cliente.Numero;
+                clienteExistente.Bairro = cliente.Bairro;
+                clienteExistente.Municipio = cliente.Municipio;
+                clienteExistente.Cep = cliente.Cep;
+                clienteExistente.UF = cliente.UF;
+                clienteExistente.DataNasc = cliente.DataNasc;
 
-            _clienteRepository.Update(clienteEditado);
-            return Ok(clienteEditado);
+                _clienteRepository.Update(clienteExistente);
+                return Ok(clienteExistente);
+            }
+            catch (Exception err) 
+            {
+                return StatusCode(500, "Houve um erro ao atualizar o cliente: " + err);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletarCliente(int id)
+        {
+            var cliente = await _clienteRepository.GetClienteByIdAsync(id);
+
+            if (cliente == null)
+                return BadRequest();
+
+            _clienteRepository.Delete(cliente);
+            _clienteRepository.Save();
+            return Ok(cliente);
         }
     }
 }

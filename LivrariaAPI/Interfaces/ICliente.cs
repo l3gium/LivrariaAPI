@@ -10,7 +10,7 @@ namespace LivrariaAPI.Interfaces
         Task<ClienteModel> GetClienteByIdAsNoTracking(int id);
         bool Add(ClienteModel cliente);
         bool Update(ClienteModel cliente);
-        bool Delete(int id);
+        bool Delete(ClienteModel cliente);
         bool Save();            
     }
 }
