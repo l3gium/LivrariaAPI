@@ -24,8 +24,6 @@ namespace LivrariaAPI.Controllers
                 var produtos = await _produtoRepository.GetAllProdutosAsync();
                 if (produtos == null || !produtos.Any())
                     return NotFound("Nenhum produto encontrado");
-                if (!ModelState.IsValid)
-                    return BadRequest();
 
                 return Ok(produtos);
             }

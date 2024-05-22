@@ -21,9 +21,6 @@ namespace LivrariaAPI.Controllers
         {
             var clientes = await _clienteRepository.GetAllClientesAsync();
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             return Ok(clientes);
 
         }

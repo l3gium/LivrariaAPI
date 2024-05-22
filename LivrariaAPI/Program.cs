@@ -19,7 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<ICliente, ClienteRepository>();
-builder.Services.AddScoped<IProduto, ProdutoRepository>();  
+builder.Services.AddScoped<IProduto, ProdutoRepository>();
+builder.Services.AddScoped<ITipoPagamento, TipoPagamentoRepository>();
 
 var app = builder.Build();
 
