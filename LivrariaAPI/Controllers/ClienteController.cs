@@ -17,7 +17,7 @@ namespace LivrariaAPI.Controllers
         }
         [HttpGet]
         
-        public async Task<ActionResult<List<ClienteModel>>> BuscarClientesAsync() 
+        public async Task<ActionResult<List<ClienteModel>>> GetClientesAsync() 
         {
             var clientes = await _clienteRepository.GetAllClientesAsync();
 
@@ -29,7 +29,7 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> BuscarClientePorIdAsync(int Id)
+        public async Task<IActionResult> GetClienteByIdAsync(int Id)
         {
             var cliente = await _clienteRepository.GetClienteByIdAsync(Id);
             
@@ -43,7 +43,7 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CriarCliente(ClienteModel cliente)
+        public IActionResult CreateCliente(ClienteModel cliente)
         {
             if (ModelState.IsValid)
             {
@@ -54,13 +54,11 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditarCliente([FromBody] ClienteModel cliente, int id)
+        public async Task<IActionResult> UpdateCliente([FromBody] ClienteModel cliente, int id)
         {
             var clienteExistente = await _clienteRepository.GetClienteByIdAsNoTracking(id);
             if (clienteExistente == null)
                 return BadRequest("Cliente não encontrado");
-            if (clienteExistente.Id != cliente.Id)
-                return BadRequest("Os ID's não conferem");
 
             try
             {
@@ -83,12 +81,12 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletarCliente(int id)
+        public async Task<IActionResult> DeleteCliente(int id)
         {
             var cliente = await _clienteRepository.GetClienteByIdAsync(id);
 
             if (cliente == null)
-                return BadRequest();
+                return NotFound("Cliente não encontrado");
 
             _clienteRepository.Delete(cliente);
             _clienteRepository.Save();

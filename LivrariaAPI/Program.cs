@@ -3,6 +3,7 @@ using LivrariaAPI.Interfaces;
 using LivrariaAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<ICliente, ClienteRepository>();
+builder.Services.AddScoped<IProduto, ProdutoRepository>();  
 
 var app = builder.Build();
 
