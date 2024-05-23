@@ -60,7 +60,7 @@ namespace LivrariaAPI.Controllers
                     return BadRequest("Não foi possível criar o produto. " + ModelState);
 
                 _produtoRepository.Add(produto);
-                return Ok("Cliente criado com sucesso!");
+                return Ok("Produto criado com sucesso!");
             }
             catch (Exception err)
             {
