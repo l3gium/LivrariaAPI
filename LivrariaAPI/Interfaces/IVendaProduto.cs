@@ -8,6 +8,7 @@ namespace LivrariaAPI.Interfaces
         Task<VendaProdutoModel> GetVendaProdutoByIdAsync(int id);
         Task<VendaProdutoModel> GetVendaProdutoByIdAsNoTracking(int id);
         bool Add(VendaProdutoModel vendaProduto);
+        bool Delete(VendaProdutoModel vendaProduto);
         bool Save();
     }
 }

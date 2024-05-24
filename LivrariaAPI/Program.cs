@@ -23,6 +23,7 @@ builder.Services.AddScoped<IProduto, ProdutoRepository>();
 builder.Services.AddScoped<ITipoPagamento, TipoPagamentoRepository>();
 builder.Services.AddScoped<IVendedor, VendedorRepository>();
 builder.Services.AddScoped<IVenda, VendaRepository>();
+builder.Services.AddScoped<IVendaProduto, vendaProdutoRepository>();
 
 var app = builder.Build();
 

@@ -20,6 +20,13 @@ namespace LivrariaAPI.Repository
             return Save();
         }
 
+        public bool Delete(VendaProdutoModel vendaProduto)
+        {
+            var vendaProdutoDeletada = _context.VendaProdutos.Where(v => v.Id == vendaProduto.Id).FirstOrDefault();
+            _context.Remove(vendaProdutoDeletada);
+            return Save();
+        }
+
         public async Task<List<VendaProdutoModel>> GetAllVendasProdutoAsync()
         {
             return await _context.VendaProdutos.ToListAsync();
