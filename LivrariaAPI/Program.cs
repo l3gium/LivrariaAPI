@@ -22,6 +22,7 @@ builder.Services.AddScoped<ICliente, ClienteRepository>();
 builder.Services.AddScoped<IProduto, ProdutoRepository>();
 builder.Services.AddScoped<ITipoPagamento, TipoPagamentoRepository>();
 builder.Services.AddScoped<IVendedor, VendedorRepository>();
+builder.Services.AddScoped<IVenda, VendaRepository>();
 
 var app = builder.Build();
 
