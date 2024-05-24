@@ -1,5 +1,6 @@
 ﻿using LivrariaAPI.Interfaces;
 using LivrariaAPI.Models;
+using LivrariaAPI.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCliente(ClienteModel cliente)
+        public async Task<IActionResult> CreateCliente(ClienteModel cliente)
         {
             if (ModelState.IsValid)
             {
