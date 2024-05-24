@@ -2,8 +2,9 @@
 using LivrariaAPI.Interfaces;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using LivrariaAPI.Models;
 
-namespace LivrariaAPI.Models
+namespace LivrariaAPI.Repository
 {
     public class vendaProdutoRepository : IVendaProduto
     {

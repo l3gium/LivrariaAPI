@@ -56,17 +56,17 @@ namespace LivrariaAPI.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateVendaProduto(VendaProdutoModel vendaProduto)
-        {
-            try
-            {
-                //fazer depois com calma
-            }
-            catch (Exception err)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao buscar os produtos. Erro: " + err);
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateVendaProduto(VendaProdutoModel vendaProduto)
+        //{
+        //    try
+        //    {
+                
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao buscar os produtos. Erro: " + err);
+        //    }
+        //}
     }
 }
