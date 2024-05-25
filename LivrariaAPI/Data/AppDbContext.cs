@@ -16,5 +16,6 @@ namespace LivrariaAPI.Data
         public DbSet<VendaModel> Vendas { get; set;}
         public DbSet<VendaProdutoModel> VendaProdutos { get; set; }
         public DbSet<VendedorModel> Vendedores { get; set;}
+        public DbSet<VendaPagtoModel> VendaPagto { get; set;}
     }
 }

@@ -9,10 +9,13 @@ namespace LivrariaAPI.Repository
     public class vendaProdutoRepository : IVendaProduto
     {
         private readonly AppDbContext _context;
+        private readonly IVenda _vendaRepository;
 
-        public vendaProdutoRepository(AppDbContext context)
+        public vendaProdutoRepository(AppDbContext context,
+                                      IVenda vendaRepository)
         {
             _context = context;
+            _vendaRepository = vendaRepository;
         }
         public bool Add(VendaProdutoModel vendaProduto)
         {
@@ -40,6 +43,12 @@ namespace LivrariaAPI.Repository
         public async Task<VendaProdutoModel> GetVendaProdutoByIdAsync(int id)
         {
             return await _context.VendaProdutos.Where(v => v.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<VendaProdutoModel> GetVendaProdutoByVendaId(int vendaId)
+        {
+            var venda = await _vendaRepository.GetVendaByIdAsync(vendaId);
+            return await _context.VendaProdutos.Where(v => v.VendaId == venda.Id).FirstOrDefaultAsync();
         }
 
         public bool Save()
