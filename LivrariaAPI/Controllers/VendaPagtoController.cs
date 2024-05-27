@@ -1,4 +1,5 @@
-﻿using LivrariaAPI.Interfaces;
+﻿using LivrariaAPI.DTO;
+using LivrariaAPI.Interfaces;
 using LivrariaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,7 +60,7 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVendaPagto(VendaPagtoModel vendaPagto, int vendaId, int tipoPag)
+        public async Task<IActionResult> CreateVendaPagto([FromBody] VendaPagtoRequestDto vendaPagtoDto, int vendaId, int tipoPag)
         {
             try
             {
@@ -69,16 +70,42 @@ namespace LivrariaAPI.Controllers
                 var venda = await _vendaRepository.GetVendaByIdAsync(vendaId);
                 if (venda == null)
                     return NotFound("Venda não encontrada");
+                if (venda.Id != vendaId)
+                    return BadRequest("ID's de venda não coincidem");
 
                 var tipoPagto = await _tipoPagRepository.GetTipoPagamentoByIdAsNoTrackingAsync(tipoPag);
                 if (tipoPagto == null)
-                    return NotFound("Tipo de pagamento encontrada");
+                    return NotFound("Tipo de pagamento não encontrada");
+                if (tipoPagto.Id != tipoPag)
+                    return BadRequest("ID's de tipo de pagamento não coincidem");
 
-                var vendaProduto = await _vendaProdutoRepository.GetVendaProdutoByVendaId(vendaId);
+                vendaPagtoDto.VendaId = vendaId;
+                vendaPagtoDto.TipoPag = tipoPag;
 
-                vendaPagto.VendaId = venda.Id;
-                vendaPagto.TipoPag = tipoPagto.Id;
-                vendaPagto.ValorPago = vendaProduto.Qtde * vendaProduto.Valor;
+
+                decimal valorTotal = 0;
+
+                var vendaProdutos = await _vendaProdutoRepository.GetVendaProdutosByVendaIdAsync(vendaPagtoDto.VendaId);
+                if (vendaProdutos == null || !vendaProdutos.Any())
+                    return NotFound("Nenhum produto encontrado para venda");
+
+                vendaPagtoDto.VendaProdutos = vendaProdutos;
+
+                foreach (var produto in vendaPagtoDto.VendaProdutos)
+                {
+                    var vendaProduto = vendaProdutos.FirstOrDefault(vp => vp.ProdutoId == produto.ProdutoId);
+                    if (vendaProduto == null)
+                        return NotFound($"Produto com ID {produto.Id} não encontrado na venda {venda.Id}");
+
+                    valorTotal += produto.Qtde * produto.Valor;
+                }
+
+                var vendaPagto = new VendaPagtoModel()
+                {
+                    VendaId = venda.Id,
+                    TipoPag = tipoPagto.Id,
+                    ValorPago = valorTotal
+                };
 
                 _vendaPagtoRepository.Add(vendaPagto);
 

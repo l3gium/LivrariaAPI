@@ -51,6 +51,20 @@ namespace LivrariaAPI.Repository
             return await _context.VendaProdutos.Where(v => v.VendaId == venda.Id).FirstOrDefaultAsync();
         }
 
+        public async Task<VendaProdutoModel> GetVendaProdutoByVendaId(int vendaId, int produtoId)
+        {
+            return await _context.VendaProdutos.Where(vp => vp.VendaId == vendaId && vp.ProdutoId == produtoId).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<List<VendaProdutoModel>> GetVendaProdutosByVendaIdAsync(int vendaId)
+        {
+            return await _context.VendaProdutos
+                .Where(vp => vp.VendaId == vendaId)
+                .ToListAsync();
+        }
+
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

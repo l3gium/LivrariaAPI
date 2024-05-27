@@ -12,6 +12,5 @@ namespace LivrariaAPI.Models
         public short Qtde { get; set; }
         public decimal Valor { get; set; }
         public decimal Custo { get; set; }
-
     }
 }
