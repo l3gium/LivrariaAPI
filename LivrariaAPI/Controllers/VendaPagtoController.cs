@@ -82,7 +82,6 @@ namespace LivrariaAPI.Controllers
                 vendaPagtoDto.VendaId = vendaId;
                 vendaPagtoDto.TipoPag = tipoPag;
 
-
                 decimal valorTotal = 0;
 
                 var vendaProdutos = await _vendaProdutoRepository.GetVendaProdutosByVendaIdAsync(vendaPagtoDto.VendaId);
