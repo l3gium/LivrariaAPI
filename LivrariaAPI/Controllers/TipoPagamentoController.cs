@@ -18,12 +18,15 @@ namespace LivrariaAPI.Controllers
         }     
         
         [HttpPost]
-        public async Task<IActionResult> CreateTipoPagamento(TipoPagamentoModel tipoPagamento)
+        public async Task<IActionResult> CreateTipoPagamento(TipoPagamentoModel tipoPagamento, string descricao, string tipopagto)
         {
             try
             {
                 if(!ModelState.IsValid)
-                    return BadRequest("Erro na ModelState. Erro: " + ModelState);
+                    return BadRequest(ModelState);
+
+                tipoPagamento.Descricao = descricao;
+                tipoPagamento.TipoPagto = tipopagto;
 
                 _tipoPagamentoRepository.Add(tipoPagamento);
                 return Ok("Tipo de pagamento criado com sucesso!");
@@ -50,20 +53,20 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTipoPagamento(int id, [FromBody] TipoPagamentoModel tipoPagamento)
+        public async Task<IActionResult> UpdateTipoPagamento(int id, string descricao, string tipopagto)
         {
             try
             {
                 if(!ModelState.IsValid)
-                    return BadRequest("Erro na ModelState. Erro: " + ModelState);
+                    return BadRequest(ModelState);
 
                 var tipoPagamentoExistente = await _tipoPagamentoRepository.GetTipoPagamentoByIdAsNoTrackingAsync(id);
 
                 if (tipoPagamentoExistente == null)
                     return NotFound("Tipo de pagamento não encontrado");
 
-                tipoPagamentoExistente.Descricao = tipoPagamento.Descricao;
-                tipoPagamentoExistente.TipoPagto = tipoPagamento.TipoPagto;
+                tipoPagamentoExistente.Descricao = descricao;
+                tipoPagamentoExistente.TipoPagto = tipopagto;
 
                 _tipoPagamentoRepository.Update(tipoPagamentoExistente);
 

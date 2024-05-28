@@ -52,12 +52,20 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduto(ProdutoModel produto)
+        public async Task<IActionResult> CreateProduto(ProdutoModel produto, string titulo, string isbn,
+                                                       string autor, string assunto, decimal valor, decimal custo)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return BadRequest("Não foi possível criar o produto. " + ModelState);
+                    return BadRequest(ModelState);
+
+                produto.Titulo = titulo;
+                produto.ISBN = isbn;
+                produto.Autor = autor;
+                produto.Assunto = assunto;
+                produto.Valor = valor;
+                produto.Custo = custo;
 
                 _produtoRepository.Add(produto);
                 return Ok("Produto criado com sucesso!");
@@ -69,7 +77,8 @@ namespace LivrariaAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduto(int id, [FromBody] ProdutoModel produto)
+        public async Task<IActionResult> UpdateProduto(int id, string titulo, string isbn,
+                                                       string autor, string assunto, decimal valor, decimal custo)
         {
             try
             {
@@ -81,12 +90,12 @@ namespace LivrariaAPI.Controllers
                 if (produtoExistente == null)
                     return NotFound("Produto não encontrado");
 
-                produtoExistente.Titulo = produto.Titulo;
-                produtoExistente.ISBN = produto.ISBN;
-                produtoExistente.Autor = produto.Autor;
-                produtoExistente.Assunto = produto.Assunto;
-                produtoExistente.Valor = produto.Valor;
-                produtoExistente.Custo = produto.Custo;
+                produtoExistente.Titulo = titulo;
+                produtoExistente.ISBN = isbn;
+                produtoExistente.Autor = autor;
+                produtoExistente.Assunto = assunto;
+                produtoExistente.Valor = valor;
+                produtoExistente.Custo = custo;
 
                 _produtoRepository.Update(produtoExistente);
 

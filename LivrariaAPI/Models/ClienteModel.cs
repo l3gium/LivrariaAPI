@@ -13,6 +13,5 @@ namespace LivrariaAPI.Models
         public string Municipio { get; set; }
         public int Cep { get; set; }
         public string UF { get; set; }
-        public DateTime DataNasc { get; set; }
     }
 }
